@@ -10,11 +10,21 @@ let status = ref("");
 const totalPages = ref(0);
 const response = ref<ApiResponse | null | string>(null);
 
+
+
 const fetchData = async () => {
   try {
-    const resp = await axios.get<ApiResponse>(
-      `https://rickandmortyapi.com/api/character/?page=${page.value}&name=${name.value}&status=${status.value}`
-    );
+    let url = `https://rickandmortyapi.com/api/character/?page=${page.value}`;
+    
+    if (name.value) {
+      url += `&name=${name.value}`;
+    }
+    
+    if (status.value) {
+      url += `&status=${status.value}`;
+    }
+
+    const resp = await axios.get<ApiResponse>(url);
     response.value = resp.data;
     totalPages.value = resp.data.info.pages;
   } catch (error) {
