@@ -37,11 +37,16 @@ const searchCharacters = () => {
   page.value = 1;
   fetchData();
 };
+const search = ()=> {
+  response.value = null
+  fetchData()
+}
 </script>
 
 <template>
   <div class="main">
-    <div class="input-search">
+    <div>
+      <div class="input-search">
       <input
         type="text"
         v-model="name"
@@ -56,6 +61,9 @@ const searchCharacters = () => {
         <option value="unknown">Unknown</option>
       </select>
     </div>
+    <div class="btn-search"><button @click="search">Search</button></div>
+    </div>
+    
     <div v-if="response" >
       <div class="list-items"
         v-if="
@@ -76,7 +84,7 @@ const searchCharacters = () => {
         </div>
       </div>
 
-      <div v-else>Ничего не найдено</div>
+      <div class="nothing" v-else>Ничего не найдено</div>
     </div>
 
     <div class="list-items" v-else>Идёт загрузка...</div>
@@ -108,8 +116,18 @@ const searchCharacters = () => {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  
 }
-
+.btn-search{
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+.nothing{
+  display: flex;
+  justify-content: center;
+  margin: 20px 0px;
+}
 select {
   width: 10%;
   padding: 10px;
