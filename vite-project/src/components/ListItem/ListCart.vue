@@ -25,10 +25,12 @@ const fetchData = async () => {
 fetchData();
 
 const nextPage = () => {
+  response.value = null
   page.value++;
 };
 
 const prevPage = () => {
+  response.value = null
   page.value--;
 };
 watch(page, () => fetchData());
