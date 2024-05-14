@@ -1,21 +1,24 @@
 <script setup lang="ts">
+import { ApiResponse } from "./ListCart.ts";
 import ItemList from "./Item/ItemList.vue";
 import { ref, watch } from "vue";
 import axios from "axios";
 
 let page = ref(1);
+let name = ref("");
+let status = ref("");
 const totalPages = ref(0);
-const response = ref(null);
+const response = ref<ApiResponse | null | string>(null);
 
 const fetchData = async () => {
   try {
-    const resp = await axios.get(
-      `https://rickandmortyapi.com/api/character/?page=${page.value}`
+    const resp = await axios.get<ApiResponse>(
+      `https://rickandmortyapi.com/api/character/?page=${page.value}&name=${name.value}&status=${status.value}`
     );
     response.value = resp.data;
     totalPages.value = resp.data.info.pages;
   } catch (error) {
-    console.error("Ошибка при получении данных:", error);
+    response.value = "error";
   }
 };
 
@@ -29,6 +32,11 @@ const prevPage = () => {
   page.value--;
 };
 watch(page, () => fetchData());
+
+const searchCharacters = () => {
+  page.value = 1;
+  fetchData();
+};
 </script>
 
 <template>
@@ -36,24 +44,41 @@ watch(page, () => fetchData());
     <div class="input-search">
       <input
         type="text"
-        v-model="searchQuery"
+        v-model="name"
         @input="searchCharacters"
         placeholder="Search characters..."
         class="search-input"
       />
+      <select v-model="status" @change="searchCharacters">
+        <option value="">All</option>
+        <option value="alive">Alive</option>
+        <option value="dead">Dead</option>
+        <option value="unknown">Unknown</option>
+      </select>
     </div>
-    <div v-if="response" class="list-items">
-      <div v-for="item in response.results">
-        <ItemList
-          :name="item.name"
-          :species="item.species"
-          :image="item.image"
-          :status="item.status"
-          :location="item.location.name"
-          :origin="item.origin.name"
-        />
+    <div v-if="response" >
+      <div class="list-items"
+        v-if="
+          response !== 'error' &&
+          typeof response !== 'string' &&
+          response.results
+        "
+      >
+        <div v-for="item in response.results">
+          <ItemList
+            :name="item.name"
+            :species="item.species"
+            :image="item.image"
+            :status="item.status"
+            :location="item.location.name"
+            :origin="item.origin.name"
+          />
+        </div>
       </div>
+
+      <div v-else>Ничего не найдено</div>
     </div>
+
     <div class="list-items" v-else>Идёт загрузка...</div>
     <div class="pagination">
       <button :disabled="page === 1" @click="prevPage">Prev Page</button>
@@ -75,6 +100,7 @@ watch(page, () => fetchData());
   display: flex;
   justify-content: center;
   margin-top: 10px;
+  gap: 5px;
 }
 .search-input {
   width: 40%;
@@ -82,6 +108,19 @@ watch(page, () => fetchData());
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+select {
+  width: 10%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 12l-6-6 1.5-1.5L10 9l4.5-4.5L16 6l-6 6z" clip-rule="evenodd" /></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 16px;
 }
 
 .list-items {
@@ -104,7 +143,7 @@ watch(page, () => fetchData());
   margin-bottom: 10px;
   vertical-align: middle;
 
-  div{
+  div {
     display: flex;
     align-items: center;
   }

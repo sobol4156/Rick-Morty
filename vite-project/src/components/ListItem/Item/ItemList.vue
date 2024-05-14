@@ -1,5 +1,6 @@
-<script setup>
+<script setup lang='ts'>
 import {defineProps} from 'vue'
+
 
 const props = defineProps({
     name: String,
@@ -14,24 +15,24 @@ const props = defineProps({
 <template>
       <div class="item">
         <img
-            :src="image"
+            :src="props.image"
           alt="person"
         />
         <div class="character-info">
           <div class="info-general block-info">
-            <h2 class="text-link">{{ name }}</h2>
+            <h2 class="text-link">{{ props.name }}</h2>
             <div class="info-alive">
               <span class="status-icon" :class="status === 'Alive'? '' : 'dead-icon'"></span>
-              <span class="status-text">{{ status }} - {{ species }}</span>
+              <span class="status-text">{{ props.status }} - {{ props.species }}</span>
             </div>
           </div>
           <div class="block-info">
             <span class="text-gray">Last known location:</span>
-            <span class="text-link">{{ location }}</span>
+            <span class="text-link">{{ props.location }}</span>
           </div>
           <div class="block-info">
             <span class="text-gray">First seen in:</span>
-            <span class="text-link">{{ origin }}</span>
+            <span class="text-link">{{ props.origin }}</span>
           </div>
         </div>
       </div>
