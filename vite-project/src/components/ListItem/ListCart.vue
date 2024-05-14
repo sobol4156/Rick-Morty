@@ -4,13 +4,13 @@ import ItemList from "./Item/ItemList.vue";
 import { ref, watch } from "vue";
 import axios from "axios";
 
-let page = ref(1);
-let name = ref("");
-let status = ref("");
+const page = ref(1);
+const name = ref("");
+const status = ref("");
 const totalPages = ref(0);
 const response = ref<ApiResponse | null | string>(null);
 
-
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const fetchData = async () => {
   try {
@@ -27,6 +27,10 @@ const fetchData = async () => {
     const resp = await axios.get<ApiResponse>(url);
     response.value = resp.data;
     totalPages.value = resp.data.info.pages;
+    
+    if(!resp.status){
+      response.value = 'error'
+    }
   } catch (error) {
     response.value = "error";
   }
@@ -46,8 +50,13 @@ const prevPage = () => {
 watch(page, () => fetchData());
 
 const searchCharacters = () => {
-  page.value = 1;
-  fetchData();
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+  searchTimeout = setTimeout(() => {
+    page.value = 1;
+    fetchData();
+  }, 500); 
 };
 const search = ()=> {
   response.value = null
@@ -179,12 +188,12 @@ select {
   }
 }
 
-@media (width < 800px) {
+@media (max-width < 800px) {
   .search-input {
     width: 60%;
   }
 }
-@media (width < 450px) {
+@media (max-width < 450px) {
   .search-input {
     width: 70%;
   }
