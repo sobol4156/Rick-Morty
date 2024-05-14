@@ -4,31 +4,34 @@ import {defineProps} from 'vue'
 const props = defineProps({
     name: String,
     species: String,
-    image: String
+    image: String,
+    status: String,
+    location: String,
+    origin: String
 })
 </script>
 
 <template>
       <div class="item">
         <img
-          src="https://rickandmortyapi.com/api/character/avatar/35.jpeg"
+            :src="image"
           alt="person"
         />
         <div class="character-info">
           <div class="info-general block-info">
             <h2 class="text-link">{{ name }}</h2>
             <div class="info-alive">
-              <span class="status-icon"></span>
-              <span class="status-text">Alive - {{ species }}</span>
+              <span class="status-icon" :class="status === 'Alive'? '' : 'dead-icon'"></span>
+              <span class="status-text">{{ status }} - {{ species }}</span>
             </div>
           </div>
           <div class="block-info">
             <span class="text-gray">Last known location:</span>
-            <span class="text-link">Bepis 9</span>
+            <span class="text-link">{{ location }}</span>
           </div>
           <div class="block-info">
             <span class="text-gray">First seen in:</span>
-            <span class="text-link">Pilot</span>
+            <span class="text-link">{{ origin }}</span>
           </div>
         </div>
       </div>
@@ -88,6 +91,9 @@ const props = defineProps({
     border-radius: 50%;
     background-color: rgb(85, 204, 68);
   }
+  .dead-icon {
+  background-color: red;
+}
 
   .status-text {
     font-size: 12px;
