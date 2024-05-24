@@ -4,7 +4,7 @@ import ItemList from "./Item/ItemList.vue";
 import { ref, watch } from "vue";
 import axios from "axios";
 
-const page = ref(1);
+const page = ref(10);
 const name = ref("");
 const status = ref("");
 const totalPages = ref(0);
@@ -108,7 +108,7 @@ const search = ()=> {
       <div class="nothing" v-else>Ничего не найдено</div>
     </div>
 
-    <div class="list-items" v-else>Идёт загрузка...</div>
+    <div class="list-items beatiful-loading" v-else>Идёт загрузка...</div>
     <div class="pagination">
       <button :disabled="page === 1" @click="prevPage">Prev Page</button>
       <div>
@@ -144,6 +144,10 @@ const search = ()=> {
   justify-content: center;
   margin-top: 5px;
 }
+.beatiful-loading{
+  margin: 700px 0;
+}
+
 .nothing{
   display: flex;
   justify-content: center;
@@ -165,6 +169,7 @@ select {
 .list-items {
   padding: 70px 10px;
   width: 100%;
+  
   display: flex;
   -webkit-box-pack: center;
   justify-content: center;
