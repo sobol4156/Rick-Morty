@@ -82,7 +82,8 @@ const search = ()=> {
         <option value="unknown">Unknown</option>
       </select>
     </div>
-    <div class="btn-search"><button @click="search">Search</button></div>
+    <div class="btn-search"><button @click="search">
+      <span>Search</span></button></div>
     </div>
     
     <div v-if="response" >
@@ -125,14 +126,17 @@ const search = ()=> {
 .main {
   position: relative;
 }
+
 .input-search {
   display: flex;
   justify-content: center;
   margin-top: 10px;
   gap: 5px;
+  padding: 0 20px;
 }
 .search-input {
-  width: 40%;
+  
+  max-width: 300px;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -154,7 +158,8 @@ const search = ()=> {
   margin: 20px 0px;
 }
 select {
-  width: 10%;
+  min-width: 100px;
+  flex-shrink: 1;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -168,7 +173,7 @@ select {
 
 .list-items {
   padding: 70px 10px;
-  width: 100%;
+  max-width: 100%;
   
   display: flex;
   -webkit-box-pack: center;
@@ -177,7 +182,7 @@ select {
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  max-width: 1920px;
+  
   color: #f5f5f5;
 }
 .pagination {
@@ -193,14 +198,19 @@ select {
   }
 }
 
-@media (max-width < 800px) {
+
+
+@media (width < 375px) {
   .search-input {
-    width: 60%;
+    max-width: 200px;
+
+
   }
-}
-@media (max-width < 450px) {
-  .search-input {
-    width: 70%;
+  .input-search{
+    padding: 0 10px;
   }
+  select{
+      min-width: auto;
+    }
 }
 </style>

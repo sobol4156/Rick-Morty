@@ -20,6 +20,8 @@
   text-align: center;
 }
 h1 {
+  padding: 0 10px;
+  max-width: 100%;
   font-weight: 900;
   font-size: 5.625rem;
 }

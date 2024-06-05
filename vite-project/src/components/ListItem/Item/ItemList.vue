@@ -76,6 +76,7 @@ const props = defineProps({
 }
 .text-link {
   cursor: pointer;
+  
 }
 .text-link:hover {
   color: rgb(255, 152, 0);
@@ -105,20 +106,27 @@ const props = defineProps({
 @media (width < 650px) {
   .item {
     flex-direction: column;
-    width: 400px;
+    max-width: 400px;
     img {
       width: 100%;
       height: auto;
       border-radius: 10px 10px 0 0;
     }
+    .character-info{
+    width: auto;
   }
+  }
+
 }
 
 @media (width < 450px) {
   .item {
     flex-direction: column;
 
-    width: 300px;
+    max-width: 300px;
   }
+
+  
+
 }
 </style>
