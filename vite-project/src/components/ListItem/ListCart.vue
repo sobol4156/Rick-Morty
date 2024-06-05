@@ -4,7 +4,7 @@ import ItemList from "./Item/ItemList.vue";
 import { ref, watch } from "vue";
 import axios from "axios";
 
-const page = ref(10);
+const page = ref(0);
 const name = ref("");
 const status = ref("");
 const totalPages = ref(0);
